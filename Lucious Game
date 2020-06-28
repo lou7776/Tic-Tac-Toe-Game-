@@ -1,0 +1,164 @@
+                            ### TIC TAC TOE Game ###
+
+                                 
+
+
+
+import random
+import time
+
+def display_board(board_slots):
+    '''(list) -> (none)
+        Displays game board.
+    '''
+    #Basic template of gameboard
+    print(board_slots[0], "|", board_slots[1], "|", board_slots[2])
+    print("----------")
+    print(board_slots[3], "|", board_slots[4], "|", board_slots[5])
+    print("----------")
+    print(board_slots[6], "|", board_slots[7], "|", board_slots[8])
+
+def start_game():
+    '''(none) -> (none)
+    This is the module in which the game runs.
+    Handles getting inputs.
+    Calls win_or_lose()
+    '''
+    #Introduces the player to the game
+    print("Welcome to our tic-tac-toe game!")
+    print("The slots on the game board are labeled as such:")
+    print()
+    board_slots = [0, 1, 2, 3, 4, 5, 6, 7, 8]
+    display_board(board_slots)
+    print()
+
+    game_running = True
+    game_is_won = False
+
+    #Loop which will run until the game is won or drawn
+    while not game_is_won:
+        getting_inputs = True
+        spots_taken = 0
+
+        #Loop for getting inputs from the human
+        while getting_inputs:
+            user = input("Choose your spot on the board(0-8): ")
+            #Checking is the inputed value is valid
+            if user.isnumeric() and 0<=int(user)<=8:
+                if board_slots[int(user)]!= "X" and board_slots[int(user)] != "O":
+                    board_slots[int(user)]= 'X'
+
+                    #Use this to check the board game is in a wining state
+                    win,winingsign=win_or_lose(board_slots, spots_taken)
+                    if win:
+                        game_is_won = True
+                        display_board(board_slots)
+                        return
+                    spots_taken += 1
+
+                    #Checking is the board is in a draw state
+                    if spots_taken == 9:
+                        game_is_won = True
+                        print("It's a Tie")
+                        display_board(board_slots)
+                        getting_inputs = False
+                        #win_or_lose(board_slots, spots_taken)
+                        getting_inputs = False
+
+                    computer_inputting = True
+                    #Loop for getting inputs from the computer
+                    while computer_inputting and spots_taken < 9:
+                        print("Computer is thinking...")
+                        time.sleep(.5)
+                        computer = random.randint(0,8)
+                        if board_slots[int(computer)]!= "X" and board_slots[int(computer)] != "O":
+                            board_slots[int(computer)] = "O"
+                            display_board(board_slots)
+                            win,winingsign=win_or_lose(board_slots, spots_taken)
+
+                            #Check if the board is in a winning state
+                            if win:
+                                game_is_won = True
+                                return
+                            spots_taken += 1
+                            computer_inputting = False
+                else:
+                    print("Spot taken!")
+            else:
+                print("Enter a valid input!")
+
+def win_or_lose(board_slots, spots_taken):
+    '''(list, int) -> (tuple)
+    Accepts current gameboard status.
+    Checks if any winning patterns are on board.
+    Return game condition and winning sign.
+    '''
+    win = False
+    winning_sign = ""
+
+    #List of patterns which will mean a win
+    if board_slots[0] == board_slots[1] == board_slots[2]:
+        win = True
+        winning_sign = board_slots[0]
+        if board_slots[0] == "X":
+            print("You win!")
+        else:
+            print("You lose!")
+    elif board_slots[3] == board_slots[4] == board_slots[5]:
+        win = True
+        winning_sign = board_slots[3]
+        if board_slots[3] == "X":
+            print("You win!")
+        else:
+            print("You lose!")
+    elif board_slots[6] == board_slots[7] == board_slots[8]:
+        win = True
+        winning_sign = board_slots[6]
+        if board_slots[6] == "X":
+            print("You win!")
+        else:
+            print("You lose!")
+    elif board_slots[0] == board_slots[3] == board_slots[6]:
+        win = True
+        winning_sign = board_slots[0]
+        if board_slots[0] == "X":
+            print("You win!")
+        else:
+            print("You lose!")
+    elif board_slots[1] == board_slots[4] == board_slots[7]:
+        win = True
+        winning_sign = board_slots[1]
+        if board_slots[1] == "X":
+            print("You win!")
+        else:
+            print("You lose!")
+    elif board_slots[2] == board_slots[5] == board_slots[8]:
+        win = True
+        winning_sign = board_slots[2]
+        if board_slots[2] == "X":
+            print("You win!")
+        else:
+            print("You lose!")
+    elif board_slots[2] == board_slots[4] == board_slots[6]:
+        win = True
+        winning_sign = board_slots[2]
+        if board_slots[2] == "X":
+            print("You win!")
+        else:
+            print("You lose!")
+    elif board_slots[0] == board_slots[4] == board_slots[8]:
+        win = True
+        winning_sign = board_slots[0]
+        if board_slots[0] == "X":
+            print("You win!")
+        else:
+            print("You lose!")
+    else:
+        if spots_taken == 9:
+            win = True
+            print("Its a draw!")
+
+    return (win, winning_sign)
+
+#Calling main
+start_game()
